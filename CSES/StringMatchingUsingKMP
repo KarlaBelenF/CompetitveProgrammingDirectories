@@ -1,0 +1,63 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> calcular_pi(const string& P) {
+    int m = P.length();
+    vector<int> pi(m, 0);
+    
+    for (int i = 1; i < m; i++) {
+        int j = pi[i - 1];
+        while (j > 0 && P[i] != P[j]) {
+            j = pi[j - 1];
+        }
+        if (P[i] == P[j]) {
+            j++;
+        }
+        pi[i] = j;
+    }
+    return pi;
+}
+
+long long cont=0;
+
+void kmp_buscar(const string& T, const string& P) {
+    if (P.empty() || T.length() < P.length()) return;
+    
+    vector<int> pi = calcular_pi(P);
+    vector<int> ocurrencias;
+    
+    int n = T.length();
+    int m = P.length();
+    int j = 0;
+    for (int i = 0; i < n; i++) {
+        while (j > 0 && T[i] != P[j]) {
+            j = pi[j - 1];
+        }
+        if (T[i] == P[j]) {
+            j++;
+        }
+        if (j == m) {
+            cont++;
+            j = pi[j - 1]; 
+        }
+    }
+    
+    return;
+}
+
+void solve()
+{
+    string s1,s2; cin>>s1>>s2; 
+    kmp_buscar(s1,s2);
+    cout<<cont<<endl;
+    
+
+}   
+ 
+int main() {ios::sync_with_stdio(false);cin.tie(nullptr);
+    int t=1; //cin>>t;
+    while(t--)//cin>>t && t!=0)
+    {
+        //cout<<"Printing order for "<<t<<" pages:\n";
+        solve();
+    }
+}
